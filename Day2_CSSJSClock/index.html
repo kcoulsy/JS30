@@ -1,0 +1,110 @@
+<html>
+
+<head>
+	<title>Clock</title>
+</head>
+
+<style>
+.head {
+	position: relative;
+	margin-left: 	auto;
+	margin-right: 	auto;
+	padding-top: 	20px;
+	text-align: center;
+	font-family: 	Helvetica;
+	font-size: 30px
+}
+.clock {
+	border: 6px solid black;
+	border-radius: 50%;
+	width: 500px;
+	height: 500px;
+	margin: 50px auto;
+	position: relative;
+	padding: 5px;
+}
+.hand {
+	width: 50%;
+	height: 6px;
+	/*background: black;*/
+	position: absolute;
+	top: 50%;
+	transform-origin: 100%;
+	/*100% along the x-axis. Ie on the right hand side*/
+	transform: rotate(90deg);
+	transition: all 0.5s;
+	transition-timing-function: ease-in-out;
+}
+.hour-hand {
+		background: #79ce40;
+		width: 30%;
+		left: 20%;
+}
+
+.min-hand {
+		background: #518be8;
+		width: 40%;
+		left: 10%;
+}
+.sec-hand {
+	background: #e85d50;
+	left: 0;
+}
+</style>
+
+<body>
+	<div class="head">
+		<h3>
+			<span class="hr"></span>
+			<span class="min"></span>
+			<span class="sec"></span>
+		</h3>
+	</div>
+	<div class="clock">
+		<div class="clock-face">
+			<div class="hand hour-hand"></div>
+			<div class="hand min-hand"></div>
+			<div class="hand sec-hand"></div>
+		</div>
+	</div>
+</body>
+
+<script>
+const secSpan = document.querySelector('.sec'),
+			minSpan = document.querySelector('.min'),
+			hourSpan = document.querySelector('.hr'),
+			secondHand = document.querySelector('.sec-hand'),
+			minHand = document.querySelector('.min-hand'),
+			hourHand = document.querySelector('.hour-hand');
+
+let secRotations = 0,
+		minRotations = 0,
+		hourRotations = 0;
+
+function setDate() {
+	const now = new Date();
+	const secs = now.getSeconds(),
+				mins = now.getMinutes(),
+				hours = now.getHours();
+
+	const secDeg = ((((secs + secRotations)/60) * 360) + 90),
+				minDeg = ((((mins + minRotations)/60) * 360) + 90),
+				hoursDeg = ((((hours + hourRotations)/12) * 360) + 90);
+
+	if (secs == 59) secRotations += 60;
+	if (mins == 59) minRotations += 60;
+	if (hours == 11) hourRotations += 60;
+
+	secondHand.style.transform = `rotate(${secDeg}deg)`;
+	minHand.style.transform = `rotate(${minDeg}deg)`;
+	hourHand.style.transform = `rotate(${hoursDeg}deg)`;
+
+	secSpan.innerHTML = secs + 's';
+	minSpan.innerHTML = mins + 'm';
+	hourSpan.innerHTML = hours + 'h';
+	
+}
+setInterval(setDate, 1000);
+</script>
+
+</html>
